@@ -22,11 +22,11 @@ img_load_lib = "base64"
 img_dir = "visual_genome/VG_100K"
 img_loader = DataLoader(ImageInDirLoader, "image")
 data_dir_list = img_loader.get_listdir(ROOT_DIR, img_dir)
-id_img_lst = list(img_loader.load(data_dir_list, {"library": img_load_lib}))  # {"id": img.filename, "image": img}
+id_img_lst = list(img_loader.load(data_dir_list, library=img_load_lib))  # {"id": img.filename, "image": img}
 
 img_dir = "visual_genome/VG_100K_2"
 data_dir_list = img_loader.get_listdir(ROOT_DIR, img_dir)
-id_img_lst2 = list(img_loader.load(data_dir_list, {"library": img_load_lib}))  # {"id": img.filename, "image": img}
+id_img_lst2 = list(img_loader.load(data_dir_list, library=img_load_lib))  # {"id": img.filename, "image": img}
 
 id_img_lst += id_img_lst2
 
