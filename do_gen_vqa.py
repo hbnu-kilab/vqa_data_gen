@@ -29,6 +29,8 @@ id_img_lst2 = list(img_loader.load(data_dir_list))  # {"id": img.filename, "imag
 
 id_img_lst += id_img_lst2
 
+id_img_dict = {list(el.keys())[0]: el[list(el.keys())[0]] for el in id_img_lst}
+
 
 json_dir = "etri/caption/coco_dev_etri.json"
 json_loader = DataLoader(JsonLoader, "json")
