@@ -52,7 +52,6 @@ def baseline(model_type, id_img_lst, etri_coco_ids):
             instruction = mk_inst_for_vqa()
             
             output_vqa = promptor.do_llm(instruction, img)
-            output_vqa = clean_data_ko(output_vqa)
     
             print(f"[Input Image: {id}] {instruction}")
             print(f"[Output VQA] {output_vqa}\n")
