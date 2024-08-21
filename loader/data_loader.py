@@ -29,8 +29,7 @@ class ImageInDirLoader(DataLoaderInterface):
 
     def load(self, file_path_lst, **kwargs):
         for file_path in file_path_lst:
-            # img = Image.open(file_path)
-            id = file_path.split(".")[-2]
+            id = file_path.split('/')[-1].split('.')[-2]
                         
             with open(file_path, "rb") as image_file:
                 yield {id: base64.b64encode(image_file.read()).decode("utf-8")}

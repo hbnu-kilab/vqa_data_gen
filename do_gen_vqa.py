@@ -46,12 +46,12 @@ elif model_type in ["gpt-4o-mini", "gpt-4-turbo"]:
     promptor = Promptor(ChatGPTPromptor, model_id)
 
 
-def baseline(model_type, id_img_lst, etri_coco_ids):
+def baseline(model_type, id_img_dict, etri_coco_ids):
     with open(f"./result/pred_{model_type}", 'w') as pf:
         err_cnt = 0
         for id in tqdm(etri_coco_ids, total=len(etri_coco_ids)):
             try:
-                img = id_img_lst[id]
+                img = id_img_dict[id]
             except:
                 err_cnt += 1
                 print(f"No ID. {id}")
@@ -66,4 +66,4 @@ def baseline(model_type, id_img_lst, etri_coco_ids):
             print("[DONE]")
             pf.write(f"[BEGIN: {id}]\n{output_vqa}\n[DONE: {id}]\n\n")
             
-baseline(model_type, id_img_lst, etri_coco_ids)
+baseline(model_type, id_img_dict, etri_coco_ids)
