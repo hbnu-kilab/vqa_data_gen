@@ -10,7 +10,7 @@ tokenizer = AutoTokenizer.from_pretrained("klue/roberta-base")
 
 ROOT_DIR = "/kilab/data/"
 
-model_type = "gpt-4o-mini"
+model_type = "llava"
 do_cda = False
 """
 rtzr/ko-gemma-2-9b-it

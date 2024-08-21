@@ -85,3 +85,27 @@ class ChatGPTPromptor(PromptorInterface):
         )
 
         return completion.choices[0].message.content
+
+
+class LLaVAPromptor(PromptorInterface):
+    def __init__(self, *args):
+        model_id = args[0]
+        self.pipeline = transformers.pipeline("image-to-text", model=model_id)
+        self.pipeline.model.eval()
+
+    def do_llm(self, instruction, img):
+        conversation = [
+            {
+
+            "role": "user",
+            "content": [
+                {"type": "text", "text": instruction},
+                {"type": "image"},
+                ],
+            },
+        ]
+        prompt = self.pipeline.tokenizer.apply_chat_template(conversation, add_generation_prompt=True)
+
+        outputs = self.pipeline(img, prompt=prompt, generate_kwargs={"max_new_tokens": 200})
+
+        return outputs[0]["generated_text"][len(prompt):]
