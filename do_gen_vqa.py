@@ -61,9 +61,9 @@ def baseline(model_type, id_img_dict, etri_coco_ids):
             
             output_vqa = promptor.do_llm(instruction, img)
     
-            print(f"[Input Image: {id}] {instruction}")
-            print(f"[Output VQA] {output_vqa}\n")
-            print(f"[DONE: {id}]")
+            
+            print(f"[Output VQA: {id}]\n{output_vqa}\n")
+            print(f"[DONE: {id}]\n\n")
             pf.write(f"[BEGIN: {id}]\n{output_vqa}\n[DONE: {id}]\n\n")
 
     print(f"ERROR COUNT: {err_cnt}")
