@@ -23,17 +23,26 @@ carrotter/ko-gemma-2b-it-sft
 """
 nshot = 0
 
-data_dir = "etri_images"
-data_loader = DataLoader(JsonInDirLoader, "image")
-data_dir_list = data_loader.get_listdir(ROOT_DIR, data_dir)
-id_img_lst = list(data_loader.load(data_dir_list))  # {"id": img.filename, "image": img}
+img_dir = "visual_genome/VG_100K"
+img_loader = DataLoader(JsonInDirLoader, "image")
+data_dir_list = img_loader.get_listdir(ROOT_DIR, img_dir)
+id_img_lst = list(img_loader.load(data_dir_list))  # {"id": img.filename, "image": img}
+
+img_dir = "visual_genome/VG_100K_2"
+data_dir_list = img_loader.get_listdir(ROOT_DIR, img_dir)
+id_img_lst2 = list(img_loader.load(data_dir_list))  # {"id": img.filename, "image": img}
+
+id_img_lst += id_img_lst2
 
 
-if model_type == "gemma2":
-    model_id = "carrotter/ko-gemma-2b-it-sft"
-    # model_id = "rtzr/ko-gemma-2-9b-it"
-    promptor = Promptor(Gemma2Promptor, model_id)
-elif model_type == "exaone":
+json_dir = "etri/caption/coco_dev_etri.json"
+json_loader = DataLoader(JsonLoader, "json")
+data_dir_list = json_loader.load(Path(ROOT_DIR) / json_dir)
+etri_coco_dict = json_loader.load(data_dir_list)
+etri_coco_ids = list(etri_coco_dict.keys())
+
+
+if model_type == "exaone":
     model_id = "LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct"
     promptor = Promptor(ExaonePromptor, model_id)
 elif model_type in ["gpt-4o-mini", "gpt-4-turbo"]:
@@ -41,14 +50,14 @@ elif model_type in ["gpt-4o-mini", "gpt-4-turbo"]:
     promptor = Promptor(ChatGPTPromptor, model_id)
 
 
-def baseline(model_type, id_img_lst):
+def baseline(model_type, id_img_lst, etri_coco_ids):
     with open(f"./result/pred_{model_type}", 'w') as pf:
-        for id_img in tqdm(id_img_lst, total=len(id_img_lst)):
-            id, img = id_img["id"], id_img["image"]
+        for id in tqdm(etri_coco_ids, total=len(etri_coco_ids)):
+            img = id_img_lst[id]
             
-            instruction = mk_inst_for_vqa(img)
+            instruction = mk_inst_for_vqa()
             
-            output_vqa = promptor.do_llm(instruction)
+            output_vqa = promptor.do_llm(instruction, img)
             output_vqa = clean_data_ko(output_vqa)
     
             print(f"[Input Image: {id}] {instruction}")

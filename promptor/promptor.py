@@ -14,8 +14,8 @@ class Promptor(PromptorInterface):
                  *args):
         self.file_system = file_system(*args)
     
-    def do_llm(self, instruction):
-        return self.file_system.do_llm(instruction)
+    def do_llm(self, instruction, img):
+        return self.file_system.do_llm(instruction, img)
 
 
 class ExaonePromptor(PromptorInterface):
@@ -54,46 +54,6 @@ class ExaonePromptor(PromptorInterface):
         return self.tokenizer.decode(output[0][len(input_ids[0]):])
 
 
-class Gemma2Promptor(PromptorInterface):
-    def __init__(self, *args):
-        # model_id = "rtzr/ko-gemma-2-9b-it"
-        model_id = args[0]
-        self.pipeline = transformers.pipeline(
-            "text-generation",
-            model=model_id,
-            model_kwargs={"torch_dtype": torch.bfloat16},
-            device_map="auto",
-        )
-
-        self.pipeline.model.eval()
-
-    def do_llm(self, instruction):
-        messages = [
-            {"role": "user", "content": f"{instruction}"}
-        ]
-
-        prompt = self.pipeline.tokenizer.apply_chat_template(
-            messages, 
-            tokenize=False, 
-            add_generation_prompt=True
-        )
-
-        terminators = [
-            self.pipeline.tokenizer.eos_token_id,
-            self.pipeline.tokenizer.convert_tokens_to_ids("<end_of_turn>")
-        ]
-
-        outputs = self.pipeline(
-            prompt,
-            max_new_tokens=2048,
-            eos_token_id=terminators,
-            do_sample=True,
-            temperature=0.6,
-            top_p=0.9,
-        )
-
-        return outputs[0]["generated_text"][len(prompt):]
-
 
 class ChatGPTPromptor(PromptorInterface):
     def __init__(self, *args):
@@ -106,18 +66,22 @@ class ChatGPTPromptor(PromptorInterface):
         self.model_id = args[0]
 
 
-
-    def do_llm(self, instruction):
+    def do_llm(self, instruction, img):
         messages = [
-            {"role": "system", 
-            "content": "You are a helpful assistant."},
-            {"role": "user", "content": instruction}
-            
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": [
+                {"type": "text", "text": instruction},
+                {"type": "image_url", "image_url": {
+                    "url": f"data:image/png;base64,{img}"}
+                    }  
+                ]
+            }
         ]
 
         completion = self.client.chat.completions.create(
             model=self.model_id,
             messages=messages,
+            temperature=0.0,
         )
 
         return completion.choices[0].message.content
