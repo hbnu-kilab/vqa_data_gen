@@ -58,4 +58,4 @@ def baseline(model_type, id_img_lst, etri_coco_ids):
             print("[DONE]")
             pf.write(f"[BEGIN: {id}]\n{output_vqa}\n[DONE: {id}]\n\n")
             
-baseline(model_type, id_img_lst)
+baseline(model_type, id_img_lst, etri_coco_ids)
