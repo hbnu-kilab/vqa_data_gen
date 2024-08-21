@@ -1,7 +1,7 @@
 from tqdm import tqdm
 from pathlib import Path
-from loader import DataLoader, JsonLoader, JsonInDirLoader, SummaryLoader, SummarySBSCLoader, SummarySDSCLoader, SummaryAIHubNewsLoader
-from promptor import Promptor, ExaonePromptor, Gemma2Promptor, ChatGPTPromptor
+from loader import DataLoader, JsonLoader, ImageInDirLoader
+from promptor import Promptor, ExaonePromptor, ChatGPTPromptor
 from promptor import mk_inst_for_vqa
 
 
@@ -24,7 +24,7 @@ carrotter/ko-gemma-2b-it-sft
 nshot = 0
 
 img_dir = "visual_genome/VG_100K"
-img_loader = DataLoader(JsonInDirLoader, "image")
+img_loader = DataLoader(ImageInDirLoader, "image")
 data_dir_list = img_loader.get_listdir(ROOT_DIR, img_dir)
 id_img_lst = list(img_loader.load(data_dir_list))  # {"id": img.filename, "image": img}
 
