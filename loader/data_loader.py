@@ -28,12 +28,18 @@ class ImageInDirLoader(DataLoaderInterface):
         self.args = args
 
     def load(self, file_path_lst, **kwargs):
+        lib = kwargs["library"]
+
         for file_path in file_path_lst:
             id = file_path.split('/')[-1].split('.')[-2]
-                        
-            with open(file_path, "rb") as image_file:
-                yield {id: base64.b64encode(image_file.read()).decode("utf-8")}
 
+            if lib == "base64":
+                with open(file_path, "rb") as image_file:
+                    img_dict = {id: base64.b64encode(image_file.read()).decode("utf-8")}
+            elif lib == "Pil":
+                img_dict = {id: Image.open(file_path)}
+            
+            yield img_dict
             
 
 class JsonLoader(DataLoaderInterface):

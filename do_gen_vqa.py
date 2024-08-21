@@ -17,15 +17,16 @@ rtzr/ko-gemma-2-9b-it
 carrotter/ko-gemma-2b-it-sft
 """
 nshot = 0
+img_load_lib = "base64"
 
 img_dir = "visual_genome/VG_100K"
 img_loader = DataLoader(ImageInDirLoader, "image")
 data_dir_list = img_loader.get_listdir(ROOT_DIR, img_dir)
-id_img_lst = list(img_loader.load(data_dir_list))  # {"id": img.filename, "image": img}
+id_img_lst = list(img_loader.load(data_dir_list, {"library": img_load_lib}))  # {"id": img.filename, "image": img}
 
 img_dir = "visual_genome/VG_100K_2"
 data_dir_list = img_loader.get_listdir(ROOT_DIR, img_dir)
-id_img_lst2 = list(img_loader.load(data_dir_list))  # {"id": img.filename, "image": img}
+id_img_lst2 = list(img_loader.load(data_dir_list, {"library": img_load_lib}))  # {"id": img.filename, "image": img}
 
 id_img_lst += id_img_lst2
 
@@ -43,7 +44,7 @@ if model_type == "exaone":
     promptor = Promptor(ExaonePromptor, model_id)
 elif model_type == "llava":
     model_id = "llava-hf/llava-1.5-7b-hf"
-    promptor = Promptor(ExaonePromptor, model_id)
+    promptor = Promptor(LLaVAPromptor, model_id)
 elif model_type in ["gpt-4o-mini", "gpt-4-turbo"]:
     model_id = model_type
     promptor = Promptor(ChatGPTPromptor, model_id)
