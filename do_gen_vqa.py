@@ -63,7 +63,9 @@ def baseline(model_type, id_img_dict, etri_coco_ids):
     
             print(f"[Input Image: {id}] {instruction}")
             print(f"[Output VQA] {output_vqa}\n")
-            print("[DONE]")
+            print(f"[DONE: {id}]")
             pf.write(f"[BEGIN: {id}]\n{output_vqa}\n[DONE: {id}]\n\n")
+
+    print(f"ERROR COUNT: {err_cnt}")
             
 baseline(model_type, id_img_dict, etri_coco_ids)
