@@ -4,13 +4,8 @@ from loader import DataLoader, JsonLoader, ImageInDirLoader
 from promptor import Promptor, ExaonePromptor, ChatGPTPromptor
 from promptor import mk_inst_for_vqa
 
-
 from transformers import AutoTokenizer
-from eval import eval
-from eval.clean_text import clean_data_ko
-import evaluate
 
-metric = evaluate.combine(["bleu", "rouge", "meteor"])
 tokenizer = AutoTokenizer.from_pretrained("klue/roberta-base")
 
 ROOT_DIR = "/kilab/data/"
