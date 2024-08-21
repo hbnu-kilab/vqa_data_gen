@@ -32,8 +32,7 @@ id_img_lst += id_img_lst2
 
 json_dir = "etri/caption/coco_dev_etri.json"
 json_loader = DataLoader(JsonLoader, "json")
-data_dir_list = json_loader.load(Path(ROOT_DIR) / json_dir)
-etri_coco_dict = json_loader.load(data_dir_list)
+etri_coco_dict = json_loader.load(Path(ROOT_DIR) / json_dir)
 etri_coco_ids = list(etri_coco_dict.keys())
 
 
