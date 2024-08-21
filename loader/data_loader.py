@@ -28,5 +28,6 @@ class ImageInDirLoader(DataLoaderInterface):
 
     def load(self, file_path_lst, **kwargs):
         for file_path in file_path_lst:
-            yield Image.open(file_path)
+            img = Image.open(file_path)
+            yield {"id": img.filename, "image": img}
             

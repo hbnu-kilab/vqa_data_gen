@@ -26,7 +26,7 @@ nshot = 0
 data_dir = "etri_images"
 data_loader = DataLoader(JsonInDirLoader, "image")
 data_dir_list = data_loader.get_listdir(ROOT_DIR, data_dir)
-img_lst = list(data_loader.load(data_dir_list))
+id_img_lst = list(data_loader.load(data_dir_list))  # {"id": img.filename, "image": img}
 
 
 if model_type == "gemma2":
@@ -41,17 +41,19 @@ elif model_type in ["gpt-4o-mini", "gpt-4-turbo"]:
     promptor = Promptor(ChatGPTPromptor, model_id)
 
 
-def baseline(model_type, img_lst):
+def baseline(model_type, id_img_lst):
     with open(f"./result/pred_{model_type}", 'w') as pf:
-        for i, img in tqdm(enumerate(img_lst), total=len(img_lst)):
+        for id_img in tqdm(id_img_lst, total=len(id_img_lst)):
+            id, img = id_img["id"], id_img["image"]
+            
             instruction = mk_inst_for_vqa(img)
             
             output_vqa = promptor.do_llm(instruction)
             output_vqa = clean_data_ko(output_vqa)
     
-            print(f"[Input text] {instruction}")
+            print(f"[Input Image: {id}] {instruction}")
             print(f"[Output VQA] {output_vqa}\n")
             print("[DONE]")
-            pf.write(f"[BEGIN]\n{output_vqa}\n[DONE]\n\n")
+            pf.write(f"[BEGIN: {id}]\n{output_vqa}\n[DONE: {id}]\n\n")
             
-baseline(model_type, img_lst)
+baseline(model_type, id_img_lst)
