@@ -48,8 +48,14 @@ elif model_type in ["gpt-4o-mini", "gpt-4-turbo"]:
 
 def baseline(model_type, id_img_lst, etri_coco_ids):
     with open(f"./result/pred_{model_type}", 'w') as pf:
+        err_cnt = 0
         for id in tqdm(etri_coco_ids, total=len(etri_coco_ids)):
-            img = id_img_lst[id]
+            try:
+                img = id_img_lst[id]
+            except:
+                err_cnt += 1
+                print(f"No ID. {id}")
+                continue
             
             instruction = mk_inst_for_vqa()
             
