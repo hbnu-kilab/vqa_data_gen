@@ -10,7 +10,7 @@ tokenizer = AutoTokenizer.from_pretrained("klue/roberta-base")
 
 ROOT_DIR = "/kilab/data/"
 
-model_type = "llava"
+model_type = "gpt-4o-mini"
 do_cda = False
 """
 gpt-4o-mini
@@ -78,10 +78,10 @@ def baseline(model_type, ex_lst):
             if pred_ans == mc_answer:
                 exact_cnt += 1
             
-            print(f"[EX-BEGIN: {mid}]\nQUESTION: {mc_question}\nANSWER: {mc_answer}\n[DONE: {mid}]\n")
-            print(f"[RES-BEGIN: {mid}]\nPRED_ANSWER: {pred_ans}\n[DONE: {mid}]\n\n")
-            pf.write(f"[EX-BEGIN: {mid}]\nQUESTION: {mc_question}\nANSWER: {mc_answer}\n[DONE: {mid}]\n")
-            pf.write(f"[RES-BEGIN: {mid}]\nPRED_ANSWER: {pred_ans}\n[DONE: {mid}]\n\n")
+            print(f"[EX-BEGIN: {mid}]\nQUESTION: {mc_question}\nANSWER: {mc_answer}")
+            print(f"PRED_ANSWER: {pred_ans}\n[DONE: {mid}]\n\n")
+            pf.write(f"[EX-BEGIN: {mid}]\nQUESTION: {mc_question}\nANSWER: {mc_answer}")
+            pf.write(f"PRED_ANSWER: {pred_ans}\n[DONE: {mid}]\n\n")
 
     print(f"SCORE: {choice_cnt/len(ex_lst)}")
     print(f"EXACT SCORE: {exact_cnt/len(ex_lst)}")
