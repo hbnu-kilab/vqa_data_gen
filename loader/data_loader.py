@@ -55,3 +55,100 @@ class JsonLoader(DataLoaderInterface):
                 data_lst = json.loads(lines)
 
         return data_lst
+
+class PredictionLoader(DataLoaderInterface):
+    def __init__(self, *args):
+        self.args = args
+
+    def load(self, file_path, **kwargs):
+        ex_lst = []
+        
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+
+            ex_flag = False
+            ex_dict = {}
+            ex_key = ""
+            for l_i, line in tqdm(enumerate(lines), total=len(lines)):
+                line = line.strip()
+
+                if "BEGIN:" in line:
+                    ex_flag = True
+                    ex_id = line.split("[BEGIN: ")[-1]
+                    ex_dict["id"] = l_i
+                    ex_dict["image_id"] = ex_id
+                    continue
+                elif "DONE:" in line:
+                    ex_id = line.split("[DONE: ")[-1]
+                    ex_lst.append(ex_dict)
+
+                    ex_flag = False
+                    ex_dict = {}
+                    ex_key = ""
+                
+                if ex_flag:
+                    if line == "[Image Topic]":
+                        ex_dict["image_topic"] = ""
+                        ex_key = "image_topic"
+                    elif line == "[Animate]":
+                        ex_dict["animate"] = []
+                        ex_key = "animate"
+                    elif line == "[Inanimate]":
+                        ex_dict["inanimate"] = []
+                        ex_key = "inanimate"
+                    elif line == "[Use or purpose]":
+                        ex_dict["use_or_purpose"] = []
+                        ex_key = "use_or_purpose"
+                    elif line == "[Image Description]":
+                        ex_dict["image_description"] = ""
+                        ex_key = "image_description"
+                    elif line == "[Short Answer Question]":
+                        ex_dict["short_answer"] = {}
+                        ex_key = "short_answer"
+                    elif line == "[Multiple Choice Question]":
+                        ex_dict["multiple_choice"] = {}
+                        ex_key = "multiple_choice"
+                    elif line == "[Multiple Select Question]":
+                        ex_dict["multiple_select"] = {}
+                        ex_key = "multiple_select"
+                    elif line == "[True/False Question]":
+                        ex_dict["true_false"] = {}
+                        ex_key = "true_false"
+                        
+                    if line == "":
+                        ex_key = ""
+                        continue
+                    else:
+                        if ex_key in ["image_topic", "image_description"]:
+                            ex_dict[ex_key] = line
+                        elif ex_key == "use_or_purpose":
+                            ex_dict[ex_key].append(line)
+                        elif ex_key in ["animate", "inanimate"]:
+                            if line != "None":
+                                ex_dict[ex_key] = line.strip('[]').split(', ')
+                        elif ex_key in ["short_answer", "true_false"]:
+                            q_split = line.split("(Q) ")
+                            a_split = line.split("(A) ")
+                            if len(q_split) > 1:
+                                ex_dict[ex_key]["question"] = q_split[-1]
+                            elif len(a_split) > 1:
+                                ex_dict[ex_key]["answer"] = a_split[-1]
+                        elif ex_key in ["multiple_choice", "multiple_select"]:
+                            q_split = line.split("(Q) ")
+                            a_split = line.split("(A) ")
+                            if len(q_split) > 1:
+                                ex_dict[ex_key]["question"] = q_split[-1]
+                            elif len(a_split) > 1:
+                                ex_dict[ex_key]["answer"] = a_split[-1]
+                            else:
+                                if "choice" in ex_dict[ex_key]:
+                                    ex_dict[ex_key]["choice"].append(line)
+                                else:
+                                    ex_dict[ex_key]["choice"] = [line]
+
+        return ex_lst
+
+
+
+                        
+

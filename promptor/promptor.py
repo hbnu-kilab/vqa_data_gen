@@ -110,6 +110,6 @@ class LLaVAPromptor(PromptorInterface):
         ]
         prompt = self.processor.apply_chat_template(conversation, add_generation_prompt=True)
 
-        outputs = self.pipeline(img, prompt=prompt, generate_kwargs={"max_new_tokens": 200})
+        outputs = self.pipeline(img, prompt=prompt, generate_kwargs={"max_new_tokens": 1024})
 
-        return outputs[0]["generated_text"][len(prompt):]
+        return outputs[0]["generated_text"][len(prompt)-5:]
