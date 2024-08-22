@@ -90,7 +90,11 @@ class ChatGPTPromptor(PromptorInterface):
 class LLaVAPromptor(PromptorInterface):
     def __init__(self, *args):
         model_id = args[0]
-        self.pipeline = transformers.pipeline("image-to-text", model=model_id)
+        self.pipeline = transformers.pipeline(
+            "image-to-text", 
+            model=model_id,
+            device_map="auto",
+        )
         self.pipeline.model.eval()
 
     def do_llm(self, instruction, img):
