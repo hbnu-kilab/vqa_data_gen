@@ -69,9 +69,9 @@ def baseline(model_type, ex_lst):
             output_vqa = promptor.do_llm(instruction, img)
 
             if '(A)' in output_vqa:
-                pred_ans = output_vqa.split('(A)')[-1].strip(' .')
+                pred_ans = output_vqa.split('(A)')[-1].strip(' (.')
             else:
-                pred_ans = output_vqa.split('[Multiple Choice]')[-1].strip(' .')
+                pred_ans = output_vqa.split('[Multiple Choice]')[-1].strip(' \n(.')
             
             if pred_ans[:2] == mc_answer[:2]:
                 choice_cnt += 1
