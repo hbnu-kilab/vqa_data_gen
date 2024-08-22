@@ -1,7 +1,7 @@
 import os
 import torch
 import transformers
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, AutoProcessor
 from huggingface_hub import login
 import openai
 from openai import OpenAI
@@ -90,6 +90,7 @@ class ChatGPTPromptor(PromptorInterface):
 class LLaVAPromptor(PromptorInterface):
     def __init__(self, *args):
         model_id = args[0]
+        self.processor = AutoProcessor.from_pretrained(model_id)
         self.pipeline = transformers.pipeline(
             "image-to-text", 
             model=model_id,
@@ -100,15 +101,14 @@ class LLaVAPromptor(PromptorInterface):
     def do_llm(self, instruction, img):
         conversation = [
             {
-
-            "role": "user",
-            "content": [
-                {"type": "text", "text": instruction},
-                {"type": "image"},
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": instruction},
+                    {"type": "image"},
                 ],
             },
         ]
-        prompt = self.pipeline.tokenizer.apply_chat_template(conversation, add_generation_prompt=True)
+        prompt = self.processor.apply_chat_template(conversation, add_generation_prompt=True)
 
         outputs = self.pipeline(img, prompt=prompt, generate_kwargs={"max_new_tokens": 200})
 
