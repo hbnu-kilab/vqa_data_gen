@@ -76,7 +76,7 @@ class PredictionLoader(DataLoaderInterface):
                     ex_flag = True
                     ex_id = line.split("[BEGIN: ")[-1]
                     ex_dict["id"] = l_i
-                    ex_dict["image_id"] = ex_id
+                    ex_dict["image_id"] = ex_id.strip(']')
                     continue
                 elif "DONE:" in line:
                     ex_id = line.split("[DONE: ")[-1]
