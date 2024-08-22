@@ -13,4 +13,4 @@ def mk_vqa_for_multiple_choice(question, choice):
     {choice[1]}\n\
     {choice[2]}\n\
     {choice[3]}\n\
-    (A) # Look at the question and answer above and choose the correct answer.").split()
+    (A) # Look at the question and answer above and choose the correct answer.".split())
