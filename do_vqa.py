@@ -48,7 +48,7 @@ elif model_type in ["gpt-4o-mini", "gpt-4-turbo"]:
 
 
 def baseline(model_type, ex_lst):
-    with open(f"./result/pred_{model_type}", 'w') as pf:
+    with open(f"./result/pred_vqa_{model_type}", 'w') as pf:
         err_cnt = 0
         for ex in tqdm(ex_lst, total=len(ex_lst)):
             mid = ex["image_id"]
