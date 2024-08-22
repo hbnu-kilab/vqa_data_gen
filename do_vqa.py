@@ -2,7 +2,7 @@ from tqdm import tqdm
 from pathlib import Path
 from loader import DataLoader, JsonLoader, ImageInDirLoader, PredictionLoader
 from promptor import Promptor, ExaonePromptor, ChatGPTPromptor, LLaVAPromptor
-from promptor import mk_inst_for_vqa
+from promptor import mk_vqa_for_multiple_choice
 
 from transformers import AutoTokenizer
 
@@ -59,10 +59,11 @@ def baseline(model_type, ex_lst):
                 print(f"No ID. {mid}")
                 continue
             
-            instruction = mk_inst_for_vqa()
+            mc_question = ex["multiple_choice"]["question"]
+            mc_choice = ex["multiple_choice"]["choice"]
+            instruction = mk_vqa_for_multiple_choice(mc_question, mc_choice)
             
             output_vqa = promptor.do_llm(instruction, img)
-    
             
             print(f"[Output VQA: {mid}]\n{output_vqa}\n")
             print(f"[DONE: {mid}]\n\n")
@@ -70,4 +71,10 @@ def baseline(model_type, ex_lst):
 
     print(f"ERROR COUNT: {err_cnt}")
             
+
+def post_proc(output):
+    for line in output:
+        line = line.strip()
+
+
 baseline(model_type, ex_lst)
