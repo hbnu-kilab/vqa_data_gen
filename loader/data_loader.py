@@ -148,7 +148,7 @@ class PredictionLoader(DataLoaderInterface):
                             if len(q_split) > 1:
                                 ex_dict[ex_key]["question"] = q_split[-1]
                             elif len(a_split) > 1:
-                                ex_dict[ex_key]["answer"] = a_split[-1]
+                                ex_dict[ex_key]["answer"] = a_split[-1].strip(' .')
                             else:
                                 if "choice" in ex_dict[ex_key]:
                                     ex_dict[ex_key]["choice"].append(line)
