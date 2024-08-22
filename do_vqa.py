@@ -79,9 +79,9 @@ def baseline(model_type, ex_lst):
                 exact_cnt += 1
             
             print(f"[EX-BEGIN: {mid}]\nQUESTION: {mc_question}\nANSWER: {mc_answer}")
-            print(f"PRED_ANSWER: {pred_ans}\n[DONE: {mid}]\n\n")
+            print(f"PRED_ANSWER: {pred_ans}\nEXACT_ANSWER: {exact_cnt}\tCHOICE_ANSWER: {choice_cnt}\n[DONE: {mid}]\n\n")
             pf.write(f"[EX-BEGIN: {mid}]\nQUESTION: {mc_question}\nANSWER: {mc_answer}")
-            pf.write(f"PRED_ANSWER: {pred_ans}\n[DONE: {mid}]\n\n")
+            pf.write(f"PRED_ANSWER: {pred_ans}\nEXACT_ANSWER: {exact_cnt}\tCHOICE_ANSWER: {choice_cnt}\n[DONE: {mid}]\n\n")
 
     print(f"SCORE: {choice_cnt/len(ex_lst)}")
     print(f"EXACT SCORE: {exact_cnt/len(ex_lst)}")
