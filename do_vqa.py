@@ -13,6 +13,7 @@ ROOT_DIR = "/kilab/data/"
 model_type = "llava"
 do_cda = False
 """
+gpt-4o-mini
 rtzr/ko-gemma-2-9b-it
 carrotter/ko-gemma-2b-it-sft
 """
@@ -32,7 +33,7 @@ id_img_lst += id_img_lst2
 
 id_img_dict = {list(el.keys())[0]: el[list(el.keys())[0]] for el in id_img_lst}
 
-pred_path = "./result"
+pred_path = "./result/pred_gpt-4o-mini.0822"
 pred_loader = DataLoader(PredictionLoader)
 ex_lst = pred_loader.load(pred_path)
 
@@ -67,13 +68,18 @@ def baseline(model_type, ex_lst):
             
             output_vqa = promptor.do_llm(instruction, img)
 
-            pred_ans = output_vqa.split('(A)')[-1].strip(' .')
+            if '(A)' in output_vqa:
+                pred_ans = output_vqa.split('(A)')[-1].strip(' .')
+            else:
+                pred_ans = output_vqa.split('[Multiple Choice]')[-1].strip(' .')
             
             if pred_ans[:2] == mc_answer[:2]:
                 choice_cnt += 1
             if pred_ans == mc_answer:
                 exact_cnt += 1
             
+            print(f"[EX-BEGIN: {mid}]\nQUESTION: {mc_question}\nANSWER: {mc_answer}\n[DONE: {mid}]\n")
+            print(f"[RES-BEGIN: {mid}]\nPRED_ANSWER: {pred_ans}\n[DONE: {mid}]\n\n")
             pf.write(f"[EX-BEGIN: {mid}]\nQUESTION: {mc_question}\nANSWER: {mc_answer}\n[DONE: {mid}]\n")
             pf.write(f"[RES-BEGIN: {mid}]\nPRED_ANSWER: {pred_ans}\n[DONE: {mid}]\n\n")
 
