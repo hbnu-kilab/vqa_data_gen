@@ -90,30 +90,39 @@ class PredictionLoader(DataLoaderInterface):
                     if line == "[Image Topic]":
                         ex_dict["image_topic"] = ""
                         ex_key = "image_topic"
+                        continue
                     elif line == "[Animate]":
                         ex_dict["animate"] = []
                         ex_key = "animate"
+                        continue
                     elif line == "[Inanimate]":
                         ex_dict["inanimate"] = []
                         ex_key = "inanimate"
+                        continue
                     elif line == "[Use or purpose]":
                         ex_dict["use_or_purpose"] = []
                         ex_key = "use_or_purpose"
+                        continue
                     elif line == "[Image Description]":
                         ex_dict["image_description"] = ""
                         ex_key = "image_description"
+                        continue
                     elif line == "[Short Answer Question]":
                         ex_dict["short_answer"] = {}
                         ex_key = "short_answer"
+                        continue
                     elif line == "[Multiple Choice Question]":
                         ex_dict["multiple_choice"] = {}
                         ex_key = "multiple_choice"
+                        continue
                     elif line == "[Multiple Select Question]":
                         ex_dict["multiple_select"] = {}
                         ex_key = "multiple_select"
+                        continue
                     elif line == "[True/False Question]":
                         ex_dict["true_false"] = {}
                         ex_key = "true_false"
+                        continue
                         
                     if line == "":
                         ex_key = ""
