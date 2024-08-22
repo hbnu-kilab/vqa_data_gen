@@ -50,6 +50,7 @@ elif model_type in ["gpt-4o-mini", "gpt-4-turbo"]:
 def baseline(model_type, ex_lst):
     with open(f"./result/pred_vqa_{model_type}", 'w') as pf:
         err_cnt = 0
+        choice_cnt, exact_cnt = 0, 0
         for ex in tqdm(ex_lst, total=len(ex_lst)):
             mid = ex["image_id"]
             try:
@@ -61,14 +62,23 @@ def baseline(model_type, ex_lst):
             
             mc_question = ex["multiple_choice"]["question"]
             mc_choice = ex["multiple_choice"]["choice"]
+            mc_answer = ex["multiple_choice"]["answer"]
             instruction = mk_vqa_for_multiple_choice(mc_question, mc_choice)
             
             output_vqa = promptor.do_llm(instruction, img)
-            
-            print(f"[Output VQA: {mid}]\n{output_vqa}\n")
-            print(f"[DONE: {mid}]\n\n")
-            pf.write(f"[BEGIN: {mid}]\n{output_vqa}\n[DONE: {mid}]\n\n")
 
+            pred_ans = output_vqa.split('(A)')[-1].strip(' .')
+            
+            if pred_ans[:2] == mc_answer[:2]:
+                choice_cnt += 1
+            if pred_ans == mc_answer:
+                exact_cnt += 1
+            
+            pf.write(f"[EX-BEGIN: {mid}]\nQUESTION: {mc_question}\nANSWER: {mc_answer}\n[DONE: {mid}]\n")
+            pf.write(f"[RES-BEGIN: {mid}]\nPRED_ANSWER: {pred_ans}\n[DONE: {mid}]\n\n")
+
+    print(f"SCORE: {choice_cnt/len(ex_lst)}")
+    print(f"EXACT SCORE: {exact_cnt/len(ex_lst)}")
     print(f"ERROR COUNT: {err_cnt}")
             
 
