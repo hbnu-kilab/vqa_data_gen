@@ -43,7 +43,7 @@ if model_type == "exaone":
     model_id = "LGAI-EXAONE/EXAONE-3.0-7.8B-Instruct"
     promptor = Promptor(ExaonePromptor, model_id)
 elif model_type == "llava":
-    model_id = "llava-hf/llava-1.5-7b-hf"
+    model_id = "llava-hf/llava-v1.6-mistral-7b-hf"
     promptor = Promptor(LLaVAPromptor, model_id)
 elif model_type in ["gpt-4o-mini", "gpt-4-turbo"]:
     model_id = model_type
