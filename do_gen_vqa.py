@@ -52,7 +52,7 @@ elif model_type in ["gpt-4o-mini", "gpt-4-turbo"]:
 
 
 def baseline(model_type, id_img_dict, etri_coco_ids):
-    with open(f"./result/pred_{model_type}", 'w') as pf:
+    with open(f"./result/pred_{model_type}_{lang}", 'w') as pf:
         err_cnt = 0
         for id in tqdm(etri_coco_ids, total=len(etri_coco_ids)):
             try:
