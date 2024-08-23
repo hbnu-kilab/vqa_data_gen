@@ -2,7 +2,7 @@ from tqdm import tqdm
 from pathlib import Path
 from loader import DataLoader, JsonLoader, ImageInDirLoader
 from promptor import Promptor, ExaonePromptor, ChatGPTPromptor, LLaVAPromptor
-from promptor import mk_inst_for_vqa
+from promptor import mk_inst_for_vqa, mk_inst_for_vqa_ko
 
 from transformers import AutoTokenizer
 
@@ -18,6 +18,7 @@ carrotter/ko-gemma-2b-it-sft
 """
 nshot = 0
 img_load_lib = "base64"
+lang = "en"
 
 img_dir = "visual_genome/VG_100K"
 img_loader = DataLoader(ImageInDirLoader, "image")
@@ -61,7 +62,10 @@ def baseline(model_type, id_img_dict, etri_coco_ids):
                 print(f"No ID. {id}")
                 continue
             
-            instruction = mk_inst_for_vqa()
+            if lang == "en":
+                instruction = mk_inst_for_vqa()
+            elif lang == "ko":
+                instruction = mk_inst_for_vqa_ko()
             
             output_vqa = promptor.do_llm(instruction, img)
     
