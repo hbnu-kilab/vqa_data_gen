@@ -154,24 +154,45 @@ class PredictionLoader(DataLoaderInterface):
                             if line != "None":
                                 ex_dict[ex_key] = line.strip('[]').split(', ')
                         elif ex_key in ["short_answer", "true_false"]:
-                            q_split = line.split("(Q) ")
-                            a_split = line.split("(A) ")
-                            if len(q_split) > 1:
+                            q_split = line.split("(Q) ")[-1]
+                            if "(Q)" in line and "(A)" in line:
+                                sub_q_split = q_split.split("(A)")
+                                q_split = sub_q_split[0].strip()
+                                a_split = sub_q_split[1].strip()
                                 ex_dict[ex_key]["question"] = q_split[-1]
-                            elif len(a_split) > 1:
                                 ex_dict[ex_key]["answer"] = a_split[-1]
-                        elif ex_key in ["multiple_choice", "multiple_select"]:
-                            q_split = line.split("(Q) ")
-                            a_split = line.split("(A) ")
-                            if len(q_split) > 1:
-                                ex_dict[ex_key]["question"] = q_split[-1]
-                            elif len(a_split) > 1:
-                                ex_dict[ex_key]["answer"] = a_split[-1].strip(' .')
                             else:
-                                if "choice" in ex_dict[ex_key]:
-                                    ex_dict[ex_key]["choice"].append(line)
+                                a_split = line.split("(A) ")
+
+                                if len(q_split) > 1:
+                                    ex_dict[ex_key]["question"] = q_split[-1]
+                                elif len(a_split) > 1:
+                                    ex_dict[ex_key]["answer"] = a_split[-1]
+                        elif ex_key in ["multiple_choice", "multiple_select"]:
+                            q_split = line.split("(Q) ")[-1]
+                            
+                            if "(Q)" in line and "(A)" in line:
+                                # all elements are listed on one line
+                                sub_q_split = q_split.split("(A)")
+                                q_split = sub_q_split[0].strip()
+                                a_split = sub_q_split[1].strip()
+                                choice = q_split.split('? ')[-1].split()
+                                ex_dict[ex_key]["question"] = q_split[-1]
+                                ex_dict[ex_key]["answer"] = a_split[-1].strip(' .')
+                                ex_dict[ex_key]["choice"] = choice
+                            else:
+                                # should extract element each line
+                                a_split = line.split("(A) ")
+
+                                if len(q_split) > 1:
+                                    ex_dict[ex_key]["question"] = q_split[-1]
+                                elif len(a_split) > 1:
+                                    ex_dict[ex_key]["answer"] = a_split[-1].strip(' .')
                                 else:
-                                    ex_dict[ex_key]["choice"] = [line]
+                                    if "choice" in ex_dict[ex_key]:
+                                        ex_dict[ex_key]["choice"].append(line)
+                                    else:
+                                        ex_dict[ex_key]["choice"] = [line]
 
         return ex_lst
 
