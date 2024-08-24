@@ -87,55 +87,55 @@ class PredictionLoader(DataLoaderInterface):
                     ex_key = ""
                 
                 if ex_flag:
-                    if line == "[Image Topic]":
+                    if "[Image Topic" in line:
                         ex_dict["image_topic"] = ""
                         ex_key = "image_topic"
                         if line[-1] != ']':
                             line = line.split(']')[-1].strip()
                         else: continue
-                    elif line == "[Animate]":
+                    elif "[Animate" in line:
                         ex_dict["animate"] = []
                         ex_key = "animate"
                         if line[-1] != ']':
                             line = line.split(']')[-1].strip()
                         else: continue
-                    elif line == "[Inanimate]":
+                    elif "[Inanimate" in line:
                         ex_dict["inanimate"] = []
                         ex_key = "inanimate"
                         if line[-1] != ']':
                             line = line.split(']')[-1].strip()
                         else: continue
-                    elif line == "[Use or purpose]":
+                    elif "[Use or purpose" in line:
                         ex_dict["use_or_purpose"] = []
                         ex_key = "use_or_purpose"
                         if line[-1] != ']':
                             line = line.split(']')[-1].strip()
                         else: continue
-                    elif line == "[Image Description]":
+                    elif "[Image Description" in line:
                         ex_dict["image_description"] = ""
                         ex_key = "image_description"
                         if line[-1] != ']':
                             line = line.split(']')[-1].strip()
                         else: continue
-                    elif line in ["[Short Answer Question]", "[Short Answer]"]:
+                    elif "[Short Answer" in line: #[" Question]", "[Short Answer]"]:
                         ex_dict["short_answer"] = {}
                         ex_key = "short_answer"
                         if line[-1] != ']':
                             line = line.split(']')[-1].strip()
                         else: continue
-                    elif line in ["[Multiple Choice Question]", "[Multiple Choice]"]:
+                    elif "[Multiple Choice" in line: # in [ Question]", "[Multiple Choice]"]:
                         ex_dict["multiple_choice"] = {}
                         ex_key = "multiple_choice"
                         if line[-1] != ']':
                             line = line.split(']')[-1].strip()
                         else: continue
-                    elif line in ["[Multiple Select Question]", "[Multiple Select]"]:
+                    elif "[Multiple Select" in line: # in [" Question]", "[Multiple Select]"]:
                         ex_dict["multiple_select"] = {}
                         if len(line.split()) < 4: ex_key = "multiple_select"
                         if line[-1] != ']':
                             line = line.split(']')[-1].strip()
                         else: continue
-                    elif line in ["[True/False Question]", "[True/False"]:
+                    elif "[True/False" in line: #in [ Question]", "[True/False"]:
                         ex_dict["true_false"] = {}
                         ex_key = "true_false"
                         if line[-1] != ']':
