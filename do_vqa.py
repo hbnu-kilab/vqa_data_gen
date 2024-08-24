@@ -73,7 +73,7 @@ def baseline(model_type, ex_lst):
             else:
                 pred_ans = output_vqa.split('[Multiple Choice]')[-1].strip(' \n(.')
             
-            if pred_ans[0] == mc_answer[0]:
+            if pred_ans[:1] == mc_answer[:1]:
                 choice_cnt += 1
             if pred_ans == mc_answer:
                 exact_cnt += 1
