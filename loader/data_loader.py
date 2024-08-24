@@ -107,19 +107,19 @@ class PredictionLoader(DataLoaderInterface):
                         ex_dict["image_description"] = ""
                         ex_key = "image_description"
                         continue
-                    elif line == "[Short Answer Question]":
+                    elif line in ["[Short Answer Question]", "[Short Answer]"]:
                         ex_dict["short_answer"] = {}
                         ex_key = "short_answer"
                         continue
-                    elif line == "[Multiple Choice Question]":
+                    elif line in ["[Multiple Choice Question]", "[Multiple Choice]"]:
                         ex_dict["multiple_choice"] = {}
                         ex_key = "multiple_choice"
                         continue
-                    elif line == "[Multiple Select Question]":
+                    elif line in ["[Multiple Select Question]", "[Multiple Select]"]:
                         ex_dict["multiple_select"] = {}
                         ex_key = "multiple_select"
                         continue
-                    elif line == "[True/False Question]":
+                    elif line in ["[True/False Question]", "[True/False"]:
                         ex_dict["true_false"] = {}
                         ex_key = "true_false"
                         continue

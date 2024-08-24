@@ -21,24 +21,24 @@ def mk_inst_for_vqa_ko():
     # 각 entity의 용도나 목적을 간략하게 설명하세요.\n\n\
     [Image Description]\n\
     # 모든 객체와 객체 간 관계에 대한 이미지 설명을 작성하세요.\n\n\
-    [Short Answer]\n\
+    [Short Answer Question]\n\
     (Q) # 단답형 질문을 작성하세요.\n\
     (A) # 단답형 정답을 작성하세요.\n\n\
-    [Multiple Choice]\n\
+    [Multiple Choice Question]\n\
     (Q) # 질문을 작성하세요.\n\
     A) # 보기를 작성하세요.\n\
     B) # 보기를 작성하세요.\n\
     C) # 보기를 작성하세요.\n\
     D) # 보기를 작성하세요.\n\
     (A) # 보기 중 올바른 정답을 작성하세요.\n\n\
-    [Multiple Select]\n\
+    [Multiple Select Question]\n\
     (Q) # 질문을 작성하세요.\n\
     A) # 보기를 작성하세요.\n\
     B) # 보기를 작성하세요.\n\
     C) # 보기를 작성하세요.\n\
     D) # 보기를 작성하세요.\n\
     (A) # 보기 중 올바른 정답을 모두 작성하세요.\n\n\
-    [True/False]\n\
+    [True/False Question]\n\
     (Q) # 질문을 작성하세요 + (True/False)\n\
     (A) # 정답을 작성하세요.".split())
 
