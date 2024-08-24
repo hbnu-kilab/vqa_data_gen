@@ -176,10 +176,11 @@ class PredictionLoader(DataLoaderInterface):
                                 sub_q_split = q_split.split("(A)")
                                 q_split = sub_q_split[0].strip()
                                 a_split = sub_q_split[1].strip()
-                                choice = q_split.split('? ')[-1].split()
-                                ex_dict[ex_key]["question"] = q_split[-1]
+                                q_split, choice = q_split.split('? ')
+                                choice = choice.split(') ')
+                                ex_dict[ex_key]["question"] = q_split+'?'
                                 ex_dict[ex_key]["answer"] = a_split[-1].strip(' .')
-                                ex_dict[ex_key]["choice"] = choice
+                                ex_dict[ex_key]["choice"] = [ch[:-2] for ch in choice[1:-1]] + [choice[-1]]
                             else:
                                 # should extract element each line
                                 a_split = line.split("(A) ")
