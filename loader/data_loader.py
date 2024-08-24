@@ -179,7 +179,7 @@ class PredictionLoader(DataLoaderInterface):
                                 q_split, choice = q_split.split('? ')
                                 choice = choice.split(') ')
                                 ex_dict[ex_key]["question"] = q_split+'?'
-                                ex_dict[ex_key]["answer"] = a_split[-1].strip(' .')
+                                ex_dict[ex_key]["answer"] = a_split.strip(' .')
                                 ex_dict[ex_key]["choice"] = [ch[:-2] for ch in choice[1:-1]] + [choice[-1]]
                             else:
                                 # should extract element each line
