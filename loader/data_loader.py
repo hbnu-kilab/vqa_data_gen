@@ -159,8 +159,8 @@ class PredictionLoader(DataLoaderInterface):
                                 sub_q_split = q_split.split("(A)")
                                 q_split = sub_q_split[0].strip()
                                 a_split = sub_q_split[1].strip()
-                                ex_dict[ex_key]["question"] = q_split[-1]
-                                ex_dict[ex_key]["answer"] = a_split[-1]
+                                ex_dict[ex_key]["question"] = q_split.split(" (True/False)")[0]
+                                ex_dict[ex_key]["answer"] = a_split
                             else:
                                 a_split = line.split("(A) ")
 
