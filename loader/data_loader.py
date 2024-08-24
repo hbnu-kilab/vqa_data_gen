@@ -131,7 +131,8 @@ class PredictionLoader(DataLoaderInterface):
                         else: continue
                     elif "[Multiple Select" in line: # in [" Question]", "[Multiple Select]"]:
                         ex_dict["multiple_select"] = {}
-                        if len(line.split()) < 4: ex_key = "multiple_select"
+                        # if len(line.split()) < 4: ex_key = "multiple_select"
+                        ex_key = "multiple_select"
                         if line[-1] != ']':
                             line = line.split(']')[-1].strip()
                         else: continue
@@ -154,14 +155,15 @@ class PredictionLoader(DataLoaderInterface):
                             if line != "None":
                                 ex_dict[ex_key] = line.strip('[]').split(', ')
                         elif ex_key in ["short_answer", "true_false"]:
-                            q_split = line.split("(Q) ")[-1]
                             if "(Q)" in line and "(A)" in line:
+                                q_split = line.split("(Q) ")[-1]
                                 sub_q_split = q_split.split("(A)")
                                 q_split = sub_q_split[0].strip()
                                 a_split = sub_q_split[1].strip()
                                 ex_dict[ex_key]["question"] = q_split.split(" (True/False)")[0]
                                 ex_dict[ex_key]["answer"] = a_split
                             else:
+                                q_split = line.split("(Q) ")
                                 a_split = line.split("(A) ")
 
                                 if len(q_split) > 1:
@@ -169,10 +171,10 @@ class PredictionLoader(DataLoaderInterface):
                                 elif len(a_split) > 1:
                                     ex_dict[ex_key]["answer"] = a_split[-1]
                         elif ex_key in ["multiple_choice", "multiple_select"]:
-                            q_split = line.split("(Q) ")[-1]
                             
                             if "(Q)" in line and "(A)" in line:
                                 # all elements are listed on one line
+                                q_split = line.split("(Q) ")[-1]
                                 sub_q_split = q_split.split("(A)")
                                 q_split = sub_q_split[0].strip()
                                 a_split = sub_q_split[1].strip()
@@ -180,9 +182,10 @@ class PredictionLoader(DataLoaderInterface):
                                 choice = choice.split(') ')
                                 ex_dict[ex_key]["question"] = q_split+'?'
                                 ex_dict[ex_key]["answer"] = a_split.strip(' .')
-                                ex_dict[ex_key]["choice"] = [ch[:-2] for ch in choice[1:-1]] + [choice[-1]]
+                                ex_dict[ex_key]["choice"] = [chr(ord('A')+ch_i) + ') ' + ch[:-2] for ch_i, ch in enumerate(choice[1:-1])] + ["D) "+choice[-1]]
                             else:
                                 # should extract element each line
+                                q_split = line.split("(Q) ")
                                 a_split = line.split("(A) ")
 
                                 if len(q_split) > 1:
