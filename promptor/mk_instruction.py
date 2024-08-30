@@ -56,3 +56,14 @@ def mk_vqa_for_multiple_choice(question, choice):
     {choice[2]}\n\
     {choice[3]}\n\
     (A) # Look at the question and answer above and choose the correct answer.".split())
+
+def mk_vqa_for_multiple_choice_wo_animate(question, choice):
+    return ' '.join(f"Generate appropriate answers by looking at the given image and questions. There are one question types: (Multiple Choice)\n\
+    [Multiple Choice]\n\
+    (Q) {question}\n\
+    {choice[0]}\n\
+    {choice[1]}\n\
+    {choice[2]}\n\
+    {choice[3]}\n\
+    # Look at the question and answer above and choose the correct answer follow text (A).\
+    (A)".split())
