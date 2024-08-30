@@ -1,3 +1,3 @@
 from .promptor_interface import PromptorInterface
 from .promptor import Promptor, ExaonePromptor, ChatGPTPromptor, LLaVAPromptor
-from .mk_instruction import mk_inst_for_vqa, mk_vqa_for_multiple_choice, mk_inst_for_vqa_ko
+from .mk_instruction import mk_inst_for_vqa, mk_vqa_for_multiple_choice, mk_inst_for_vqa_ko, mk_vqa_for_multiple_choice_wo_animate

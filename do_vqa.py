@@ -2,7 +2,7 @@ from tqdm import tqdm
 from pathlib import Path
 from loader import DataLoader, JsonLoader, ImageInDirLoader, PredictionLoader
 from promptor import Promptor, ExaonePromptor, ChatGPTPromptor, LLaVAPromptor
-from promptor import mk_vqa_for_multiple_choice
+from promptor import mk_vqa_for_multiple_choice, mk_vqa_for_multiple_choice_wo_animate
 
 from transformers import AutoTokenizer
 
